@@ -27,7 +27,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "template_py"
-version = "0.0.1"
+version = "0.0.2"
 description = "Yet another template for Python"
 readme = "README.md"
 authors = [{name="Matt Ralston <professional.bio.coder@gmail.com>", email="mralston.development@gmail.com"}]
@@ -114,7 +114,7 @@ dev = [
 
 [tool.setuptools]
 include-package-data = true
-packages = ['template_py']
+packages = ['configurator']
 
 [tool.setuptools.package-data]
 kmerdb = ["CITATION.txt"]
@@ -131,7 +131,7 @@ Projects = "https://github.com/MatthewRalston?tab=projects"
 
 
 [project.scripts]
-template_py = "template_py:cli"
+configurator = "configurator:cli"
 #[options.entry_points]
 
 

@@ -109,7 +109,7 @@ NAME = 'template_py'
 DESCRIPTION = 'Yet another _ library for Python'
 long_description = 'See README.md for details'
 REQUIRES_PYTHON = '>=3.12.2'
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 URL = 'https://github.com/YourUsername/template_py'
 CURRENT_RELEASE = "https://github.com/MatthewRalston/template_py/archive/v{0}.tar.gz".format(VERSION)
 EMAIL = 'professional.bio.coder@gmail.com'
@@ -163,9 +163,9 @@ CLASSIFIERS = [
 # }
 if can_import('numpy') is not None:
     import numpy as np
-    extensions = [
-        Extension("template_py.extension_module", ["template_py/extension_module.pyx"], include_dirs=[np.get_include()]),
-    ]
+    # extensions = [
+    #     #Extension("template_py.extension_module", ["template_py/extension_module.pyx"], include_dirs=[np.get_include()]),
+    # ]
     # Where the magic happens:
     setup(
         name=NAME,
@@ -196,7 +196,7 @@ if can_import('numpy') is not None:
         test_suite='test',
         #    tests_require=['mamba', 'expect'],
         #cmdclass={'build_ext': build_ext},
-        ext_modules=cythonize(extensions),
+        # ext_modules=cythonize(extensions),
         library_dirs=["."],
         zip_safe=False,
     )

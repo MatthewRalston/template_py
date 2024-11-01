@@ -1,0 +1,57 @@
+TITLE: Project TODO
+#+SUBTITLE: org-mode TODO list template and formatting suggestions
+#+AUTHOR: Matt Ralston <mralston.development@gmail.com>
+#+PROPERTY: TYPE_all Meta Create Cycle 
+#+OPTIONS: ^:{}
+#+STARTUP: latexpreview
+#+OPTIONS: tex:t
+
+
+* General TODO
+** TODO T O D O      # 1
+** TODO T O D O      # 2
+** TODO T O D O      # 3
+** TODO T O D O      # 4
+* Organizational List
+** [Item]: title here
+** [description]: some description
+** [issues/statements/etc]:
+*** Issue/subject template
+*** Template [DONT EDIT]
+**** [title]: issue title
+***** 
+**** [issue]: (number or other description)
+***** 
+**** [assignee]: Matt Ralston
+**** [concern]: (principle blocker or choice or resourcing issue involved)
+**** [references]: (links, relevant brands, businesses, software, or solutions)
+**** [need-by]: (when/who needs this?)
+**** [assignee]: Matt Ralston
+**** [stakeholders]: Matt Ralston, 
+**** [choices]: (primary brands, software, businesses, or solutions involved)
+***** [choice]: choice number one
+****** pros:
+******* 
+******* 
+****** cons:
+*** 
+*** 
+**** [the knowledge gap (tkg)]: 
+***** Gap 1:
+****** 
+****** 
+***** Gap 2:
+****** 
+****** 
+***** [delegation]: Matt Ralston
+**** [Next due date]:
+***** Next check in date:
+
+
+
+**** [Approach/ongoing]
+***** 
+***** 
+**** [Next due date]:
+***** Next check in date:
+**
