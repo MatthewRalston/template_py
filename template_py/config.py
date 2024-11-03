@@ -17,12 +17,16 @@
 
 
 
-VERSION="0.0.1"
+VERSION="0.0.2"
 REQUIRES_PYTHON="3.7.4"
 
 
-subcommands = [] # The name of each subcommand as a string
-subcommand_functions = [] # The name of each associated method called by args.func(yourmethodname)
+subcommands = ["new", "unimplemented"] # The name of each subcommand as a string
+subcommand_functions = ["new", "unimplemented"] # The name of each associated method called by args.func(yourmethodname)
+
+default_logline_choices = (20, 50, 100, 200)
+
+
 
 thanks = "\n\n\n" + "="*40 + """\n
 

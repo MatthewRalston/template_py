@@ -23,14 +23,14 @@ from collections import OrderedDict
 import jsonschema
 
 
-from template_py import config, util
+from configurator import config, util
 
 
 
 yaml.add_representer(OrderedDict, util.represent_yaml_from_collections_dot_OrderedDict)
 
 default_logline_choices = (20, 50, 100, 200)
-PINNED_ISSUES = (140, 141, 143, 149, 150, 153,)
+PINNED_ISSUES = (1, 2, 3)
 
 PROGRAM_BANNER = """
 
@@ -40,9 +40,9 @@ PROGRAM_BANNER = """
      |||
      |||        version :     v{0}
      |||
-     |||        GitHub  : https://github.com/MatthewRalston/template_py/issues
+     |||        GitHub  : https://github.com/yourusername/template_py/issues
      |||         PyPI   : https://pypi.org/project/template_py/
-     |||      Website   : https://matthewralston.github.io/template_py
+     |||      Website   : https://yourusername.github.io/template_py
      |||
 
 
@@ -165,7 +165,7 @@ GITHUB_PROJECT_BANNER = """
                          Repo: template_py
                Feature branch: main
 
-Issue Tracker: https://github.com/MatthewRalston/template_py/issues
+Issue Tracker: https://github.com/yourusername/template_py/issues
 -------------------------------------------------------
 """
 
@@ -188,7 +188,9 @@ COMMAND INFO
 
 
 
-
+"""
+This unpacks config.subcommands into 'command_1_name', etc.
+"""
 command_1_name, command_2_name = config.subcommands
 
 COMMANDS = [
@@ -200,18 +202,47 @@ COMMANDS = [
 
 
         
-command_1_description = None
-command_1_description_long = None
+command_1_description = "create a new project from template_py!"
+command_1_description_long = ""
 
+command_1_parameters = "Describe required and/or relevant parameters/flags/switches/named arguments. Note the term 'parameter' is distinct from 'inputs', which are typically input filepaths <infile> and provided in a positional manner, as opposed to named arguments of the style --parameter PARAMVALUE"
+    
+command_1_inputs = "Describe required positional arguments"
+command_1_usage = "template_py subcommand --verbose INFILE"
+COMMAND_1_BANNER = """
 
-command_1_parameters = None
-command_1_inputs = None
-command_1_usage = None
-COMMAND_1_BANNER = None
+"""
 
-COMMAND_1_PARAMS = None
+COMMAND_1_PARAMS = OrderedDict({
+    "name": "parameters",
+    "type": "array",
+    "items": [
+        OrderedDict({
+            "name": "arguments",
+            "type": "array",
+            "items": [
+                {
+                    "name": "-p|--parameter-1",
+                    "type": "string",
+                    "value": "argparse parameter (flags, switches, and params)"
+                }
+            ]
+        })
+    ]
+})
 
-COMMAND_1_INPUTS = None
+COMMAND_1_INPUTS = OrderedDict({
+    "name": "inputs",
+    "type": "array",
+    "items": [
+        OrderedDict({
+            "name": "positional-argument-1",
+            "type": "string",
+            "value": "a trailing, positional argument, input, filename, etc."
+        })
+    ],
+    "required": ["positional-argument-1"]
+})
 
 
 
@@ -220,63 +251,55 @@ COMMAND_1_FEATURES = OrderedDict({
     "type": "array",
     "items": [
         OrderedDict({
-            "name": "k-mer count array produced as sequences are read by sliding window approach. (Un)compressed support for .fa/.fq.",
-            "shortname": "parallel OOP sliding window k-mer shredding",
-            "description": "N = 4^k count-vector from one or more sequence files. (index, k-mer id, count, and frequency [as float64])"
+            "name": "Your first subcommand's first feature",
+            "shortname": "subcommand feature 1",
+            "description": "The subcommand associated with 'COMMAND_1' under the subcommands category (the subcommand of interest from __init__.py)"
         }),
         OrderedDict({
-            "name": "k-mers are tallied, and metadata merged from the input files",
-            "shortname": "merge counts, metadata from across inputs",
-            "description": "a final metadata structure and output metrics are collected for display to the user."
+            "name": "Subcommand 1 feature 2",
+            "shortname": "s1f2",
+            "description": "A description of the second feature of subcommand 1. Increment 'feature += 1' and 'step += 1' in __init__.py when the second feature of the first subcommand begins. May be useful in debugging"
         })
 
             ]
 })
 
 
-COMMAND_2_STEPS = None
-
-command_2_description = None
-command_2_description_long = None
-
-
-command_2_parameters = None
-command_2_inputs = None
-command_2_usage = None
-COMMAND_2_BANNER = None
-
-COMMAND_2_PARAMS = None
-
-COMMAND_2_INPUTS = None
-
-
-
-COMMAND_2_FEATURES = OrderedDict({
-    "name": "features",
+COMMAND_1_STEPS = OrderedDict({
+    "name": "steps",
     "type": "array",
     "items": [
         OrderedDict({
-            "name": "k-mer count array produced as sequences are read by sliding window approach. (Un)compressed support for .fa/.fq.",
-            "shortname": "parallel OOP sliding window k-mer shredding",
-            "description": "N = 4^k count-vector from one or more sequence files. (index, k-mer id, count, and frequency [as float64])"
+            "name": "subcommand step1",
+            "shortnane": "string",
+            "description": "performs step 1 in the programs step list."
         }),
-        OrderedDict({
-            "name": "k-mers are tallied, and metadata merged from the input files",
-            "shortname": "merge counts, metadata from across inputs",
-            "description": "a final metadata structure and output metrics are collected for display to the user."
-        })
 
-            ]
+
+        OrderedDict({
+            "name": "step2",
+            "shortname": "string",
+            "description": "a description of the second step of the algorithm, what has been done, key data structures involved, what is being iterated over, source of the data, etc."
+        })
+    ]
 })
 
 
-COMMAND_2_STEPS = None
+
+
+
+
+
 
 ###################################################
 
 #            F i n a l     c o m m a n d    a g g r e g a t e
 
 ###################################################
+
+"""
+Add commands you would like described, using this appmap.py config, from the 'usage' and 'help' functions invoked by 'usage' and 'help' argparsed args from __init__.py. Anything you don't want documented, leave from config.subcommands and config.subcommand_functions
+"""
 
 
 ALL_PARAMS = {
@@ -417,7 +440,7 @@ class template_py_appmap:
 
         sys.stderr.write(THREE_LINES)
 
-    def print_graph_header(self):
+    def print_subcommand1_header(self):
         """
         'kmerdb usage graph'
 

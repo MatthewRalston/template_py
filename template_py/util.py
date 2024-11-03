@@ -26,7 +26,7 @@ import re
 from collections import deque, OrderedDict
 import numpy as np
 
-from kmerdb import config
+#from configurator import config
 
 
 findall_float = re.compile(r"[-+]?(?:\d*\.\d+|\d+)")
