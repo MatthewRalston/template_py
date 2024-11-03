@@ -89,11 +89,16 @@ def expanded_help(arguments):
 
     template_py_appmap = appmap.template_py_appmap( argv )
 
-    
+    match arguments.method:
+        case "subcommand1":
+            template_py_appmap.print_subcommand1_header()
+        case "subcommand2":
+            template_py_appmap.print_subcommand2_header()
+        
     if arguments.method not in config.subcommands:
         raise ValueError("unsupported method")
-    elif arguments.method == "subcommand":
-        template_py_appmap.subcommand_profile_header()
+    elif arguments.method == "subcommand1":
+        template_py_appmap.print_subcommand1_header()
 
     sys.stderr.write("\n\nUse --help for expanded usage\n")
 
@@ -108,24 +113,27 @@ def subcommand(args):
     print("I'm running 'template_py subcommand' with these arguments")
 
 
+def new(args):
+    print("Hello world")
 
 def cli():
 
     import sys
 
-    from template_py import config, appmap
+    from configurator import config, appmap
+
+    parser = argparse.ArgumentParser()
+
+    subparsers = parser.add_subparsers(help="Use -h|--help with the individual subcommands, OR the 'usage' and 'help' subcommands to describe inputs, parameters, features, steps, etc.")
 
 
-
-
-    subcommand_parser = argparse.add_parser("subcommand", help="Run a subcommand of template_py")
-    subcommand_parser.add_argument("required", type=str, choices=["foo", "bar", "baz"], help="This is a required argument")
-    subcommand_parser.add_argument("-f", "--flag", action="store_true", default=False, help="this is a just a flag tho")
-    subcommand_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
-    subcommand_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
-    subcommand_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
-    subcommand_parser.add_argument("-l", "--log-file", type=str, default="kmerdb.log", help=argparse.SUPPRESS)
-    subcommand_parser.set_defaults(func=subcommand)
+    new_parser = subparsers.add_parser("new", help="Run a subcommand of template_py")
+    new_parser.add_argument("-p", "--project-name", type=str, required=True, help="The project-name to use throughout the Python template")
+    new_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
+    new_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
+    new_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
+    new_parser.add_argument("-l", "--log-file", type=str, default="kmerdb.log", help=argparse.SUPPRESS)
+    new_parser.set_defaults(func=new)
 
 
 
