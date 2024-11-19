@@ -21,6 +21,10 @@ VERSION="0.0.2"
 REQUIRES_PYTHON="3.7.4"
 
 
+requirements_count = 7
+requirements_dev_count = 8
+
+
 subcommands = ["new", "unimplemented"] # The name of each subcommand as a string
 subcommand_functions = ["new", "unimplemented"] # The name of each associated method called by args.func(yourmethodname)
 

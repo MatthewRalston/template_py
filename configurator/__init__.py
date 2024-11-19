@@ -31,7 +31,7 @@ import signal
 #from collections import OrderedDict
 
 
-
+from configurator import logger as template_py_Logger
 global logger
 logger = None
 
@@ -117,6 +117,7 @@ def cli():
 
     from configurator import config, appmap
 
+
     parser = argparse.ArgumentParser()
 
     subparsers = parser.add_subparsers(help="Use -h|--help with the individual subcommands, OR the 'usage' and 'help' subcommands to describe inputs, parameters, features, steps, etc.")
@@ -127,7 +128,7 @@ def cli():
     new_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
     new_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
     new_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
-    new_parser.add_argument("-l", "--log-file", type=str, default="kmerdb.log", help=argparse.SUPPRESS)
+    new_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
     new_parser.set_defaults(func=new)
 
 
@@ -160,16 +161,16 @@ def cli():
     start = time.time()
 
         
-    logger = template_py_Logger.Loggah(logfile=args.log_file or None, level=args.verbose)
+    logger = template_py_Logger.AppLogger(logfile=args.log_file or None, level=args.verbose)
         
 
-    template_py_appmap = appmap.template_py_appmap( argv , logger )
+    template_py_appmap = appmap.template_py_appmap( args , logger )
 
 
     
     template_py_appmap.print_program_header()
     sys.stderr.write("Beginning program...\n")
-    kmerdb_appmap.print_verbosity_header()
+    template_py_appmap.print_verbosity_header()
     
     if args.debug is True:
         args.func(args)
