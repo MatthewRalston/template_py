@@ -1,0 +1,8 @@
+When using programs that use template_py to do your research, please cite the following:
+@software{template_py,
+  author={YourName},
+  title={template_py},
+  url={https://github.com/MatthewRalston/tempalate_py},
+  version={0.0.1},
+  date = {10/09/2024}
+}
