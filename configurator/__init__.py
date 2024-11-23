@@ -108,9 +108,13 @@ def subcommand(args):
     print("I'm running 'template_py subcommand' with these arguments")
 
 
-def new(args):
-    print("Hello world")
+def cli_app(args):
+    print("this will make a CLI app")
 
+def django_app(args):
+    print("this will make a django app")
+
+    
 def cli():
 
     import sys
@@ -123,16 +127,23 @@ def cli():
     subparsers = parser.add_subparsers(help="Use -h|--help with the individual subcommands, OR the 'usage' and 'help' subcommands to describe inputs, parameters, features, steps, etc.")
 
 
-    new_parser = subparsers.add_parser("new", help="Run a subcommand of template_py")
-    new_parser.add_argument("-p", "--project-name", type=str, required=True, help="The project-name to use throughout the Python template")
-    new_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
-    new_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
-    new_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
-    new_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
-    new_parser.set_defaults(func=new)
+    cli_parser = subparsers.add_parser("cli", help="Create a new CLI")
 
+    cli_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
+    cli_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
+    cli_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
+    cli_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
+    cli_parser.add_argument("project", type=str,  help="The project-name for your new Python cli")
+    cli_parser.set_defaults(func=cli_app)
 
+    django_parser = subparsers.add_parser("django", help="Create a new Django app")
+    django_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
+    django_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
+    django_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
+    django_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
+    django_parser.add_argument("project", type=str,  help="The project-name for your new Django application")
 
+    django_parser.set_defaults(func=django_app)
 
 
 
