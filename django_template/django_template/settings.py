@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # New application stuff goes here
+    'django_template.apps.DjangoTemplateAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -73,12 +77,27 @@ WSGI_APPLICATION = 'django_template.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Uses the dj-database-url library to extract a postgreSQL connection string from
+# the DATABASE_URL environment variable
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=500,
+        conn_health_checks=True,
+    )
+
+else:
+    
+    ## Default SQLite3 database
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+
+
 
 
 # Password validation
@@ -114,6 +133,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+# Use 'python3 manage.py collectstatic' to 
+
+#STATIC_ROOT = BASE_DIR / 'staticfiles'
+# If you need to do compression and other things to your static files, check out the Django tutorial
+# which uses the 'whitenoise' middleware.
+
+# https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Deployment#whitenoise
+
+# Otherwise, for simplicity, simply use the basic STATIC_URL for Django's default static asset serving services.
 
 STATIC_URL = 'static/'
 
