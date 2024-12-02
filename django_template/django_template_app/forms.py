@@ -1,63 +1,71 @@
 from django import forms
-from .models import User, Project
+from .models import ContactInfo, PersonalInfo, UserProfile, Request
 
 
-class UserForm(forms.ModelForm):
-    """
-    Form for users
-    """
+
+class PersonalInfoForm(forms.ModelForm):
 
     class Meta:
-        model = User
-        fields = [
-            'personal.first_name',
-            'personal.last_name',
-            'personal.company',
-            'contact.email',
-            'contact.phone',
-            'contact.address',
-            'contact.suite',
-            'contact.city',
-            'contact.state',
-            'contact.zip_code'
-        ]
+        model = PersonalInfo
+        fields = (
+            'first_name',
+            'last_name',
+            'company'
+        )
 
-    def save(self, commit=True):
+
+class ContactInfoForm(forms.ModelForm):
+
+    class Meta:
+        model = ContactInfo
+        fields = (
+            'email',
+            'phone',
+            'address',
+            'suite',
+            'city',
+            'state',
+            'zip_code'
+        )
+
+class UserProfileForm(forms.ModelForm):
+
+    personal_info = PersonalInfoForm(prefix="personal")
+    contact_info = ContactInfoForm(prefix="contact")
+
+    class Meta:
+        model = UserProfile
+        fields = ()
+
+    def __init__(self, *args, **kwargs):
+        contact_data = kwargs.pop('contact_data', None)
+        personal_data = kwargs.pop('personal_data', None)
+        
+        super().__init__(*args, **kwargs)
+
+        self.contact_form = ContactInfoForm(contact_data, prefix="contact")
+        self.personal_form = PersonalInfoForm(personal_data, prefix="personal")
+
+    def is_valid(self):
+        return super().is_valid() and self.contact_form.is_valid() and self.personal_form.is_valid()
+
+    def save(self, commit=False):
         user = super().save(commit=False)
 
-        contact_info, _ = User.ContactInfo.objects.get_or_create(
-            email=self.cleaned_data['contact.email'],
-            phone=self.cleaned_data['contact.phone'],
-            address=self.cleaned_data['contact.address'],
-            suite=self.cleaned_data['contact.suite'],
-            city=self.cleaned_data['contact.city'],
-            state=self.cleaned_data['contact.state'],
-            zip_code=self.cleaned_data['contact.zip_code']
-            
-        )
+        contact_info = self.contact_form.save(commit=commit)
+        personal_info = self.personal_form.save(commit=commit)
 
-        personal_info, _ = User.PersonalInfo.objects.get_or_create(
-            first_name=self.cleaned_data['personal.first_name'],
-            last_name=self.cleaned_data['personal.last_name'],
-            company=self.cleaned_data['personal.company']
-        )
-        
         user.contact = contact_info
         user.personal = personal_info
+    
+    
 
 
-        if commit:
-            user.save()
-
-        return user
-
-
-
-class ProjectForm(forms.ModelForm):
+class RequestForm(forms.ModelForm):
 
 
     class Meta:
-        model = Project
+        model = Request
         fields = [
             'project_name',
             'project_description',

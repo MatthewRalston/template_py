@@ -78,85 +78,86 @@ models.GenericIPAddressField(       models.Subquery(
 """
 
 
-# Create your models here.
-
-
-class User(models.Model):
+class UserProfile(models.Model):
     """
     Model representing a User with field groups
     """
-
-    class ContactInfo(models.Model):
-        email = models.EmailField(
-            validators=[EmailValidator()],
-            unique=True,
-            verbose_name="Contact Email"
-        )
-        phone = model.CharField(
-            max_length=10,
-            blank=True,
-            null=True,
-            verbose_name="Phone Number"
-        )
-        address = models.CharField(
-            max_length=100,
-            validators=[MinLengthValidator(5)],
-            verbose_name="Address"
-        )
-        suite = models.CharField(
-            max_length=20,
-            validators=[MinLengthValidator(0)],
-            verbose_name="Suite"
-        )
-        city = models.CharField(
-            max_length=50,
-            validators=[MinLengthValidator(3)],
-            verbose_name="City"
-        )
-        state = models.CharField(
-            max_length=2,
-            validators=[MinLengthValidator(2)],
-            verbose_name="State"
-        )
-        zip_code = models.CharField(
-            max_length=5,
-            validators=[MinLengthValidator(5)],
-            verbose_name="Zip Code"
-        )
-
-    class PersonalInfo(models.Model):
-        first_name = models.CharField(
-            max_length=40,
-            validators=[MinLengthValidator(2)],
-            verbose_name="First Name"
-        )
-        last_name = models.CharField(
-            max_length=40,
-            validators=[MinLengthValidator(2)],
-            verbose_name="Last Name"
-        )
-
-        company = models.CharField(
-            max_length=100,
-            validators=[MinLengthValidator(5)],
-            verbose_name="Company Name"
-
-    contact = models.OneToOneField(
-        ContactInfo,
-        on_delete=models.CASCADE,
-        realted_name='user_contact'
+    username = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name="Username"
     )
-    personal = models.OneToOneField(
-        PersonalInfo,
-        on_delete=models.CASCADE,
-        related_name='user_personal'
-    )
-            
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.personal.first_name} {self.personal.last_name}"
+
+
+# Create your models here.
+class ContactInfo(models.Model):
+
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    
+    email = models.EmailField(
+        max_length=120,
+        validators=[EmailValidator()],
+        unique=True,
+        verbose_name="Contact Email"
+    )
+    phone = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+        verbose_name="Phone Number"
+    )
+    address = models.CharField(
+        max_length=100,
+        validators=[MinLengthValidator(5)],
+        verbose_name="Address"
+    )
+    suite = models.CharField(
+        max_length=20,
+        validators=[MinLengthValidator(0)],
+        verbose_name="Suite"
+    )
+    city = models.CharField(
+        max_length=50,
+        validators=[MinLengthValidator(3)],
+        verbose_name="City"
+    )
+    state = models.CharField(
+        max_length=2,
+        validators=[MinLengthValidator(2)],
+        verbose_name="State"
+    )
+    zip_code = models.CharField(
+        max_length=5,
+        validators=[MinLengthValidator(5)],
+        verbose_name="Zip Code"
+    )
+
+
+class PersonalInfo(models.Model):
+
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    
+    first_name = models.CharField(
+        max_length=40,
+        validators=[MinLengthValidator(2)],
+        verbose_name="First Name"
+    )
+    last_name = models.CharField(
+        max_length=40,
+        validators=[MinLengthValidator(2)],
+        verbose_name="Last Name"
+    )
+
+    company = models.CharField(
+        max_length=100,
+        validators=[MinLengthValidator(5)],
+        verbose_name="Company Name"
+    )
+
 
 
 class Request(models.Model):
@@ -172,11 +173,13 @@ class Request(models.Model):
     )
 
     project_description = models.CharField(
+        max_length=500,
+        validators=[MinLengthValidator(10)],
         verbose_name="Project Description"
     )
             
     user = models.ForeignKey(
-        User,
+        UserProfile,
         on_delete=models.CASCADE,
         related_name="requests"
     )

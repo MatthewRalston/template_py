@@ -1,0 +1,16 @@
+{% if user_list %}
+
+  <ul>
+    {% for user in user_list %}
+    <li>
+      <div>
+        {% for field, value in user.fields.items %}
+          <p>{{ field }}: {{ value }}</p>
+        {% endfor %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% else %}
+   <p> No users </p>
+{% endif %}

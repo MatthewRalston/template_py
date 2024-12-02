@@ -147,7 +147,7 @@ Project Link: [https://github.com/YourUsername/template_py](https://github.com/u
 
 <!--
 Thanks of course to my fans (and haters). Yeah i see you.... but i dont.
-Thanks to my former mentors BC, MR, IN, CR, and my newer bosses PJ and KL.
+Thanks to my former mentors Andrew S, Charles T, Brian C, Mark R, Isaac N, Carlos R, and my newer bosses Punita J and Kyle L.
 Thanks to the Pap lab for the first dataset that I continue to use.
 Thank you to Ryan for the food and stuff. I actually made this project specifically so you and I could converse...
 Thanks to Blahah for tolerating someone snooping and imitating his Ruby style.
