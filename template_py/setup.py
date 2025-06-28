@@ -181,7 +181,7 @@ if can_import('numpy') is not None:
         keywords = KEYWORDS,
         classifiers=CLASSIFIERS,
         packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-        #package_dir={'template_py': 'template_py'},
+        package_dir={'template_py': 'template_py'},
         package_data={'template_py': ['CITATION.txt']},
         # If your package is a single module, use this instead of 'packages':
         #py_modules=['kmerdb'],
@@ -197,7 +197,6 @@ if can_import('numpy') is not None:
         #    tests_require=['mamba', 'expect'],
         #cmdclass={'build_ext': build_ext},
         # ext_modules=cythonize(extensions),
-        namespace_packages=["template_py"],
         library_dirs=["."],
         zip_safe=False,
     )

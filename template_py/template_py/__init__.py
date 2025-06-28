@@ -25,15 +25,13 @@ import yaml
 import json
 import time
 import signal
-import shutil
-
 
 #from multiprocessing import cpu_count
 
 #from collections import OrderedDict
 
 
-from configurator import logger as template_py_Logger
+
 global logger
 logger = None
 
@@ -91,11 +89,16 @@ def expanded_help(arguments):
 
     template_py_appmap = appmap.template_py_appmap( argv )
 
-    
+    match arguments.method:
+        case "subcommand1":
+            template_py_appmap.print_subcommand1_header()
+        case "subcommand2":
+            template_py_appmap.print_subcommand2_header()
+        
     if arguments.method not in config.subcommands:
         raise ValueError("unsupported method")
-    elif arguments.method == "subcommand":
-        template_py_appmap.subcommand_profile_header()
+    elif arguments.method == "subcommand1":
+        template_py_appmap.print_subcommand1_header()
 
     sys.stderr.write("\n\nUse --help for expanded usage\n")
 
@@ -110,76 +113,30 @@ def subcommand(args):
     print("I'm running 'template_py subcommand' with these arguments")
 
 
-def cli_app(args):
-    import tempfile
-    import tarfile
-    import shutil
-    from configurator import util
-    """
-    Create source directory and destination directory references
-    """
+def new(args):
+    print("Hello world")
 
-    template = os.path.join(os.path.dirname(__file__), "template_py.tar.gz")
-    tempdir = tempfile.mkdtemp()
-    with tarfile.open(template, 'r:gz') as tfile:
-        tfile.extractall(tempdir)
-    logger.log_it("Extracted tar contents to '{0}'".format(tempdir), "INFO")
-
-    source_dir = os.path.join(tempdir, "template_py")
-    
-    if os.path.exists(args.project) and os.access(args.project, os.R_OK):
-        raise ValueError("argument 'project' cannot point to an existing directory")
-
-    dest_dir = args.project
-    #dest_dir = os.path.join(".", args.project)
-    
-    try:
-        
-        util.copy_tree_with_replace(source_dir, args.project, "template_py", args.project)
-    except FileExistsError as e:
-        logger.log_it("An exception occurred while creating the CLI app at the destination directory '{0}'...".format(dest_dir), "ERROR")
-        raise e
-    except Exception as e:
-        logger.log_it("An exception occurred while creating the CLI app at the destination directory '{0}'...".format(dest_dir), "ERROR")
-        raise e
-
-
-    
-    print("this will make a CLI app")
-
-def django_app(args):
-    print("this will make a django app")
-
-    
 def cli():
 
     import sys
 
     from configurator import config, appmap
 
-
     parser = argparse.ArgumentParser()
 
     subparsers = parser.add_subparsers(help="Use -h|--help with the individual subcommands, OR the 'usage' and 'help' subcommands to describe inputs, parameters, features, steps, etc.")
 
 
-    cli_parser = subparsers.add_parser("cli", help="Create a new CLI")
+    new_parser = subparsers.add_parser("new", help="Run a subcommand of template_py")
+    new_parser.add_argument("-p", "--project-name", type=str, required=True, help="The project-name to use throughout the Python template")
+    new_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
+    new_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
+    new_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
+    new_parser.add_argument("-l", "--log-file", type=str, default="template_py.log", help=argparse.SUPPRESS)
+    new_parser.set_defaults(func=new)
 
-    cli_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
-    cli_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
-    cli_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
-    cli_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
-    cli_parser.add_argument("project", type=str,  help="The project-name for your new Python cli")
-    cli_parser.set_defaults(func=cli_app)
 
-    django_parser = subparsers.add_parser("django", help="Create a new Django app")
-    django_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
-    django_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
-    django_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
-    django_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
-    django_parser.add_argument("project", type=str,  help="The project-name for your new Django application")
 
-    django_parser.set_defaults(func=django_app)
 
 
 
@@ -208,16 +165,16 @@ def cli():
     start = time.time()
 
         
-    logger = template_py_Logger.AppLogger(logfile=args.log_file or None, level=args.verbose)
+    logger = template_py_Logger.Loggah(logfile=args.log_file or None, level=args.verbose)
         
 
-    template_py_appmap = appmap.template_py_appmap( args , logger )
+    template_py_appmap = appmap.template_py_appmap( argv , logger )
 
 
     
     template_py_appmap.print_program_header()
     sys.stderr.write("Beginning program...\n")
-    template_py_appmap.print_verbosity_header()
+    kmerdb_appmap.print_verbosity_header()
     
     if args.debug is True:
         args.func(args)

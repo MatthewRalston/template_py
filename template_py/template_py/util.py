@@ -24,7 +24,7 @@ import tempfile
 import yaml, json
 import re
 from collections import deque, OrderedDict
-import numpy as np
+
 
 #from configurator import config
 

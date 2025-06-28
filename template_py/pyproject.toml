@@ -26,7 +26,7 @@ requires = ["setuptools>=69.2.0", "numpy>=1.21.2", "Cython>=3.0.8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "configurator"
+name = "template_py"
 version = "0.0.2"
 description = "Yet another template for Python"
 readme = "README.md"
@@ -69,12 +69,12 @@ classifiers = [
 	    #"Topic :: Software Development :: Assemblers"
 keywords = ["keyword"]
 dependencies = [
-	     "numpy>=2.0.0",
+	     #"numpy>=2.0.0",
 	     "PyYAML>=6.0.1",
 	     "jsonschema>=4.17.3",
 	     "psutil>=4.2.0",
-	     "Cython>=3.0.8",
-	     "pandas>=2.2.2",
+	     #"Cython>=3.0.8",
+	     #"pandas>=2.2.2",
              "setuptools>=69.2.0",
 	     ]
 
@@ -114,21 +114,15 @@ dev = [
 
 [tool.setuptools]
 include-package-data = true
-packages = ['configurator', 'template_py']
+packages = ['template_py']
 
- [tool.setuptools.package-data]
- configurator = ["CITATION.txt", "template_py.tar.gz"]
-# pyproject = ["pyproject.toml"]
+[tool.setuptools.package-data]
+citation = ["CITATION.txt"]
 
-
-# [tool.setuptools.packages.find]
-# where = ["configurator", "configurator.template_py"]
-# include = ["*"]  # alternatively: `exclude = ["additional*"]`
-# namespaces = false
 
 [project.urls]
 Homepage = "https://matthewralston.github.io/template_py"
-QuickStart = "https://matthewralston.github.io/kmerdb/quickstart.html"
+QuickStart = "https://matthewralston.github.io/template_py/quickstart.html"
 
 Github = "https://github.com/MatthewRalston/template_py"
 Issues = "https://github.com/MatthewRalston/template_py/issues"
@@ -136,7 +130,7 @@ Projects = "https://github.com/MatthewRalston?tab=projects"
 
 
 [project.scripts]
-configurator = "configurator:cli"
+template_py = "template_py:cli"
 #[options.entry_points]
 
 

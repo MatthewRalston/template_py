@@ -1,37 +1,8 @@
 # README
 
 
-## Changing the default configuration
+This is an empty template Django application.
 
-Be 
-
-
-## How to configure a fresh Python project from template_py
-
-```
-configurator cli PROJECTNAME
-```
-
-Creates a new directory and CLI app named 'PROJECTNAME'.
-
-There are 5 main files: `appmap.py`, `config.py`, `__init__.py`, `logger.py` and `util.py`.
-
-
-There is configurable expanded help messages, usage statements, parameter descriptions etc. in the optional `appmap` module. The `config.py` file contains all main constant/variable/global configurations and variables. Use the following to print the semantic version of the program, for instance.
-
-```python
-from myapp import config
-print(config.VERSION)
-```
-
-
-Describe parameters, inputs, argparse variables, etc. by copy/pasting versions of the `COMMAND_1_PARAMS`, `command_1_usage` and other variables in `appmap.py`, and adjusting the `ALL_PARAMS`, `ALL_INPUTS`, `ALL_FEATURES`, and `ALL_STEPS` constants. These are used to associate the subcommands listed in `config.py` under the `subcommands` and `subcommand_functions` variables. These are mapped (whatever) or unpacked to the variables named 'command_1_name', 'command_2_name', etc. that are used to reference specific subcommand param, inputs, features, and steps during expanded usage/help messages. Parameters, inputs, features, and steps are metadata typically collected by the advanced error handling facilities (optional, in `appmap.py`) and are collected by the exit gracefully command that wraps the entire main/cli functions, and is invoked by default, disabled by the `--debug` flag. Control the released portion of the logs with the `--log-lines` parameter. Useful for large n or the dimension and size in bytes of the data structures involved in your program.
-
-
-
-## But I don't want any of this!
-
-Delete `appmap.py` and rewrite the 'cli' function of `__init__.py` without the appmap features. Create a normal entry point function using argparse and your own logging, and enjoy!
 
 
 
@@ -69,6 +40,41 @@ A brief description of what this project does and who it's for.
 ## Demo
 
 ![Demo](demo.gif)
+
+## Recreate the template
+
+1. Create a Django project
+
+```bash
+django-admin startproject django_template
+```
+
+2. Create a Django application directory within the Django project
+
+```bash
+python3 manage.py startapp django_template_app
+```
+
+3. Add the 'django_template_app' to `settings.py` in `django_template/django_template`
+
+
+```python
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Add our new application
+    'django_template_app.apps.DjangoTemplateAppConfig', # This object was created for us in django_template/apps.py
+]
+
+
+```
+
+
 
 ## Installation and Usage
 
@@ -151,7 +157,7 @@ Project Link: [https://github.com/YourUsername/template_py](https://github.com/u
 
 <!--
 Thanks of course to my fans (and haters). Yeah i see you.... but i dont.
-Thanks to my former mentors Andrew S, Charles T, Brian C, Mark R, Isaac N, Carlos R, and my newer bosses Punita J and Kyle L.
+Thanks to my former mentors BC, MR, IN, CR, and my newer bosses PJ and KL.
 Thanks to the Pap lab for the first dataset that I continue to use.
 Thank you to Ryan for the food and stuff. I actually made this project specifically so you and I could converse...
 Thanks to Blahah for tolerating someone snooping and imitating his Ruby style.

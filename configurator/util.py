@@ -23,15 +23,103 @@ import gzip
 import tempfile
 import yaml, json
 import re
+import shutil
+import logging
 from collections import deque, OrderedDict
-import numpy as np
 
-#from configurator import config
+logger = logging.getLogger(__file__)
 
 
 findall_float = re.compile(r"[-+]?(?:\d*\.\d+|\d+)")
 
 
+def copy_tree_with_replace(src:str, dst:str, to_replace:str, replace_with:str):
+    """
+    Copy a directory and contents into a new directory
+    """
+    if type(src) is not str and not isinstance(src, os.PathLike):
+        raise TypeError("configurator.util.replace_during_copy() expects a str as the first positional argument 'src'")
+    elif type(dst) is not str and not isinstance(src, os.PathLike):
+        raise TypeError("configurator.util.replace_during_copy() expects a str as the second positional argument 'dst'")
+    elif type(to_replace) is not str:
+        raise TypeError("configurator.util.replace_during_copy() expects a str as the third positional argument 'to_replace'")
+    elif type(replace_with) is not str:
+        raise TypeError("configurator.util.replace_during_copy() expects a str as the fourth positional argument 'replace_with'")
+
+    curdir = ''
+    dstdir = dst
+
+    if not os.path.exists(dst):
+        if dst.endswith(to_replace):
+            dst = dst.replace(to_replace, replace_with)
+        os.mkdir(dst)
+            
+    
+    for dirpath, dirnames, filenames in os.walk(src):
+        print("Dirpath:", dirpath)            
+        print("Dirnames:", dirnames)
+        print("Filenames:", filenames)
+
+        curdir = dst
+        
+        print("Extracting contents from '{0}' to '{1}'".format(dirpath, dst))
+        for fn in filenames:
+            src_fname = os.path.join(dirpath, fn)
+            if src_fname.count(to_replace) == 2:
+                dst_fname = os.path.join(dst, replace_with, fn)
+            elif src_fname.count(to_replace) == 1:
+                dst_fname = os.path.join(dst,  fn)
+            else:
+                logger.error("Contents of .tar.gz file extracted to '{0}' were being copied to '{1}'".format(dirpath, dst))
+                raise ValueError("Could not determine the nesting structure of the Python source files to be copied.")
+            logger.info("Copying from '{0}' to '{1}'".format(src_fname, dst_fname))
+            copy_with_replace(src_fname, dst_fname, to_replace=to_replace, replace_with=replace_with)
+
+            
+        for dir in dirnames:
+            newdir = os.path.join(dst, replace_with) if str(dir).endswith(to_replace) else os.path.join(dst, dir)
+            if not os.path.exists(newdir):
+                os.mkdir(newdir)
+                logger.info("Created directory '{0}'".format(newdir))
+
+
+        """
+        Now copy files
+        """
+        
+
+def copy_with_replace(src:str, dst:str, to_replace:str=None, replace_with:str=None):
+    """
+    Replace strings in a file with a different string during shutil.copy2
+    """
+    if type(src) is not str:
+        raise TypeError("configurator.util.copy_with_replace() expects a string as its first positional argument")
+    elif type(dst) is not str:
+        raise TypeError("configurator.util.copy_with_replace() expects a string as its second positional argument")
+
+    if to_replace is None or type(to_replace) is not str:
+        raise TypeError("configurator.util.copy_with_replace() expects the keyword argument 'to_replace' to be a str")
+    if replace_with is None or type(replace_with) is not str:
+        raise TypeError("configurator.util.copy_with_replace() expects the keyword argument 'replace_with' to be a str")
+    
+    
+    
+    if os.path.isdir(src):
+        shutil.copy2(src, dst)
+    elif os.path.isfile(src):
+        # shutil.copy2(src, dst)
+        with open(src, 'r') as ifile:
+            filedata = ifile.read()
+            if filedata.count(to_replace) == 0:
+                logger.info("configurator.util.copy_with_replace() did not find any occurrences of '{0}' in the source file '{1}'".format(to_replace, src))
+            newdata = filedata.replace(to_replace, replace_with)
+            with open(dst, 'w') as ofile:
+                ofile.write(newdata)
+        
+    elif os.path.islink(src):
+        shutil.copy2(src, dst)
+    else:
+        raise ValueError("configurator.util.replace_during_copy() expects the source contents to be a directory, a file, or a symlink.")
 
 def represent_yaml_from_collections_dot_OrderedDict(dumper, data):
     """
