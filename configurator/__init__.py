@@ -143,9 +143,39 @@ def cli_app(args):
         logger.log_it("An exception occurred while creating the CLI app at the destination directory '{0}'...".format(dest_dir), "ERROR")
         raise e
 
+def fastapi_app(args):
+    import tempfile
+    import tarfile
+    import shutil
+    from configurator import util
+    """
+    Create source directory and destination directory references
+    """
 
+    template = os.path.join(os.path.dirname(__file__), "fastapi_template.tar.gz")
+    tempdir = tempfile.mkdtemp()
+    with tarfile.open(template, 'r:gz') as tfile:
+        tfile.extractall(tempdir)
+    logger.log_it("Extracted tar contents to '{0}'".format(tempdir), "INFO")
+
+    source_dir = os.path.join(tempdir, "fastapi_template")
     
-    print("this will make a CLI app")
+    if os.path.exists(args.project) and os.access(args.project, os.R_OK):
+        raise ValueError("argument 'project' cannot point to an existing directory")
+
+    dest_dir = args.project
+    #dest_dir = os.path.join(".", args.project)
+    
+    try:
+        
+        util.copy_tree_with_replace(source_dir, args.project, "fastapi_template", args.project)
+    except FileExistsError as e:
+        logger.log_it("An exception occurred while creating the FastAPI app at the destination directory '{0}'...".format(dest_dir), "ERROR")
+        raise e
+    except Exception as e:
+        logger.log_it("An exception occurred while creating the FastAPI app at the destination directory '{0}'...".format(dest_dir), "ERROR")
+        raise e
+
 
 def django_app(args):
     print("this will make a django app")
@@ -172,6 +202,14 @@ def cli():
     cli_parser.add_argument("project", type=str,  help="The project-name for your new Python cli")
     cli_parser.set_defaults(func=cli_app)
 
+    fastapi_parser = subparsers.add_parser("fastapi", help="Create a new Fastapi app")
+    fastapi_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
+    fastapi_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
+    fastapi_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
+    fastapi_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
+    fastapi_parser.add_argument("project", type=str, help="The project-name for your FastAPI app")
+    fastapi_parser.set_defaults(func=fastapi_app)
+    
     django_parser = subparsers.add_parser("django", help="Create a new Django app")
     django_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
     django_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
