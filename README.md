@@ -1,15 +1,17 @@
 # README
 
+Make new scripts with expanded logging features and project setup. Personal CLI configuration preferences.
 
-## Changing the default configuration
-
-Be 
+## Install
 
 
-## How to configure a fresh Python project from template_py
 
-```
-configurator cli PROJECTNAME
+```bash
+pip install . # Installs the configurator module/command to site-packages
+mkdir myproject && cd myproject
+configurator cli PROJECTNAME # New cli application with module named PROJECTNAME
+# OR
+configurator fastapi PROJECTNAME # New fastapi application using MatthewRalston/fastapi_template
 ```
 
 Creates a new directory and CLI app named 'PROJECTNAME'.
@@ -25,7 +27,7 @@ print(config.VERSION)
 ```
 
 
-Describe parameters, inputs, argparse variables, etc. by copy/pasting versions of the `COMMAND_1_PARAMS`, `command_1_usage` and other variables in `appmap.py`, and adjusting the `ALL_PARAMS`, `ALL_INPUTS`, `ALL_FEATURES`, and `ALL_STEPS` constants. These are used to associate the subcommands listed in `config.py` under the `subcommands` and `subcommand_functions` variables. These are mapped (whatever) or unpacked to the variables named 'command_1_name', 'command_2_name', etc. that are used to reference specific subcommand param, inputs, features, and steps during expanded usage/help messages. Parameters, inputs, features, and steps are metadata typically collected by the advanced error handling facilities (optional, in `appmap.py`) and are collected by the exit gracefully command that wraps the entire main/cli functions, and is invoked by default, disabled by the `--debug` flag. Control the released portion of the logs with the `--log-lines` parameter. Useful for large n or the dimension and size in bytes of the data structures involved in your program.
+<!-- Advanced: Describe parameters, inputs, argparse variables, etc. by copy/pasting versions of the `COMMAND_1_PARAMS`, `command_1_usage` and other variables in `appmap.py`, and adjusting the `ALL_PARAMS`, `ALL_INPUTS`, `ALL_FEATURES`, and `ALL_STEPS` constants. These are used to associate the subcommands listed in `config.py` under the `subcommands` and `subcommand_functions` variables. These are mapped (whatever) or unpacked to the variables named 'command_1_name', 'command_2_name', etc. that are used to reference specific subcommand param, inputs, features, and steps during expanded usage/help messages. Parameters, inputs, features, and steps are metadata typically collected by the advanced error handling facilities (optional, in `appmap.py`) and are collected by the exit gracefully command that wraps the entire main/cli functions, and is invoked by default, disabled by the `--debug` flag. Control the released portion of the logs with the `--log-lines` parameter. Useful for large n or the dimension and size in bytes of the data structures involved in your program. -->
 
 
 
@@ -33,97 +35,6 @@ Describe parameters, inputs, argparse variables, etc. by copy/pasting versions o
 
 Delete `appmap.py` and rewrite the 'cli' function of `__init__.py` without the appmap features. Create a normal entry point function using argparse and your own logging, and enjoy!
 
-
-
-
-
-![Project Logo](logo_url.png)
-
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/username/project-name.svg?branch=master)](https://travis-ci.org/username/project-name)
-[![Coverage Status](https://coveralls.io/repos/github/username/project-name/badge.svg?branch=master)](https://coveralls.io/github/username/project-name?branch=master)
-
-A brief description of what this project does and who it's for.
-
-## Table of Contents
-
-- [Features](#features)
-- [Demo](#demo)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [API Reference](#api-reference)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [FAQ](#faq)
-- [License](#license)
-- [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
-
-## Features
-
-- Feature 1
-- Feature 2
-- Feature 3
-
-## Demo
-
-![Demo](demo.gif)
-
-## Installation and Usage
-
-Add this to your `Cargo.toml`:
-
-```toml
-[dependencies]
-crate_name = "0.1.0"
-```
-
-Then, add this to your crate root (`main.rs` or `lib.rs`):
-
-```rust
-use crate_name;
-
-fn main() {
-    crate_name::some_function();
-}
-```
-
-For more detailed examples, please refer to the [documentation](https://docs.rs/crate_name).
-```
-
-
-## Configuration
-
-Explain how to configure your project, if applicable.
-
-```json
-{
-  "key": "value",
-  "anotherKey": "anotherValue"
-}
-```
-
-## API Reference
-
-### `functionName(param1, param2)`
-
-Description of the function.
-
-- `param1` (Type): Description of param1
-- `param2` (Type): Description of param2
-
-Returns: Description of return value
-
-## Contributing
-
-Contributions are always welcome! Please read the [contribution guidelines](CONTRIBUTING.md) first.
-
-## Tests
-
-```bash
-npm test
-```
 
 ## FAQ
 

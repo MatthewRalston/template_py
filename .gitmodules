@@ -1,0 +1,3 @@
+[submodule "fastapi_template"]
+	path = fastapi_template
+	url = git@github.com:MatthewRalston/fastapi_template.git

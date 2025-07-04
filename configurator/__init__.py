@@ -210,15 +210,6 @@ def cli():
     fastapi_parser.add_argument("project", type=str, help="The project-name for your FastAPI app")
     fastapi_parser.set_defaults(func=fastapi_app)
     
-    django_parser = subparsers.add_parser("django", help="Create a new Django app")
-    django_parser.add_argument("-v", "--verbose", help="Prints warnings to the console by default", default=0, action="count")
-    django_parser.add_argument("--debug", action="store_true", default=False, help="Debug mode. Do not format errors and condense log")
-    django_parser.add_argument("-nl", "--num-log-lines", type=int, choices=config.default_logline_choices, default=50, help=argparse.SUPPRESS)
-    django_parser.add_argument("-l", "--log-file", type=str, default="configurator.log", help=argparse.SUPPRESS)
-    django_parser.add_argument("project", type=str,  help="The project-name for your new Django application")
-
-    django_parser.set_defaults(func=django_app)
-
 
 
     """
